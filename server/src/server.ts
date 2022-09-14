@@ -1,12 +1,16 @@
 // const express = require('express');   "type": "commonjs",
 import express from 'express';
+import { PrismaClient } from '@prisma/client';
 
 const app = express();
+const prisma = new PrismaClient({ log: ['query'] });
 
 const PORT = 3333;
 
-app.get('/games', (req, res) => {
-  return res.json([]);
+app.get('/games', async (req, res) => {
+  const games = await prisma.game.findMany();
+
+  return res.status(200).json(games);
 });
 
 app.post('/ads', (req, res) => {
